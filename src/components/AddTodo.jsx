@@ -9,7 +9,7 @@ const AddTodo = () => {
   const [isSubmitting, setSubmitting] = useState(false);
 
   const onSubmit = handleSubmit(async (data) => {
-    fetch("http://localhost:3000/addTodo", {
+    fetch("https://job-task-the-learn-cloud-server.vercel.app/addTodo", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),

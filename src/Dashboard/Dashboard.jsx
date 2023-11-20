@@ -21,7 +21,7 @@ const Dashboard = () => {
 
     try {
       // Update the order on the server using PUT
-      await fetch(`http://localhost:3000/updateStatus`, {
+      await fetch(`https://job-task-the-learn-cloud-server.vercel.app/updateStatus`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -53,7 +53,7 @@ const Dashboard = () => {
 
     try {
       // Update the order on the server using PUT
-      await fetch(`http://localhost:3000/isLine`, {
+      await fetch(`https://job-task-the-learn-cloud-server.vercel.app/isLine`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +69,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:3000/`)
+    fetch(`https://job-task-the-learn-cloud-server.vercel.app/`)
       .then((res) => res.json())
       .then((data) => {
         // Order the data based on the "order" field
@@ -86,7 +86,7 @@ const Dashboard = () => {
 
     try {
       // Updating the order on the server
-      await fetch(`http://localhost:3000/updateOrder`, {
+      await fetch(`https://job-task-the-learn-cloud-server.vercel.app/updateOrder`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
