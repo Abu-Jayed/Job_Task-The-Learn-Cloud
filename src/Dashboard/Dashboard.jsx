@@ -10,9 +10,14 @@ const Dashboard = () => {
     const id = e._id;
 
     const updatedData = todos.map((item) =>
-    item._id === e._id ? { ...item, status: e.status === "completed" ? "uncompleted" : "completed" } : item
-  );
-  setTodo(updatedData)
+      item._id === e._id
+        ? {
+            ...item,
+            status: e.status === "completed" ? "uncompleted" : "completed",
+          }
+        : item
+    );
+    setTodo(updatedData);
 
     try {
       // Update the order on the server using PUT
@@ -23,6 +28,38 @@ const Dashboard = () => {
         },
         body: JSON.stringify({
           status,
+          id,
+        }),
+      });
+    } catch (error) {
+      console.error("Error updating order on the server:", error);
+    }
+  };
+
+  const handleLine = async (e) => {
+    console.log("clicking");
+    const isLine = e.line;
+    const id = e._id;
+
+    const updatedData = todos.map((item) =>
+      item._id === e._id
+        ? {
+            ...item,
+            line: e.line === "true" ? "false" : "true",
+          }
+        : item
+    );
+    setTodo(updatedData);
+
+    try {
+      // Update the order on the server using PUT
+      await fetch(`http://localhost:3000/isLine`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          isLine,
           id,
         }),
       });
@@ -84,32 +121,25 @@ const Dashboard = () => {
               {todos.map((todo, i) => (
                 <tr className="border-b" key={i}>
                   <td className="hover:cursor-pointer">Drag</td>
-                  <td className="p-2">{todo.title}</td>
+                  <td
+                  onClick={() => handleLine(todo)}
+                    className={`${
+                      todo.line === "true" ? "line-through" : ""
+                    } p-2 hover:cursor-text`}
+                  >
+                    {todo.title}
+                  </td>
                   <td className="w-20 font-bold">
-                    <div className="flex gap-2">
-                      <select
+                    <div className="flex gap-2 justify-between w-[120px]">
+                      <p
                         className={`${
                           todo.status === "completed"
                             ? "text-green-600"
-                            : "text-red-700"
-                        } w-24`}
-                        name=""
-                        id=""
+                            : "text-red-600"
+                        }`}
                       >
-                        <option
-                          className="text-red-700 font-bold"
-                          value="Hello"
-                        >
-                          {todo.status === "completed"
-                            ? "completed"
-                            : "uncompleted"}
-                        </option>
-                        <option className="text-green-700 font-bold" value="Hi">
-                          {todo.status === "completed"
-                            ? "uncompleted"
-                            : "completed"}
-                        </option>
-                      </select>
+                        {todo.status}
+                      </p>
                       <input
                         onClick={() => handleCheck(todo)}
                         type="checkbox"
