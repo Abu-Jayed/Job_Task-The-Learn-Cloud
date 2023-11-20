@@ -6,11 +6,11 @@ const Dashboard = () => {
   const [todos, setTodo] = useState([]);
 
   const handleCheck = async (e) => {
-    const status = e.status;
-    const id = e._id;
+    const status = e?.status;
+    const id = e?._id;
 
-    const updatedData = todos.map((item) =>
-      item._id === e._id
+    const updatedData = todos?.map((item) =>
+      item?._id === e?._id
         ? {
             ...item,
             status: e.status === "completed" ? "uncompleted" : "completed",
@@ -21,31 +21,33 @@ const Dashboard = () => {
 
     try {
       // Update the order on the server using PUT
-      await fetch(`https://job-task-the-learn-cloud-server.vercel.app/updateStatus`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          status,
-          id,
-        }),
-      });
+      await fetch(
+        `https://job-task-the-learn-cloud-server.vercel.app/updateStatus`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            status,
+            id,
+          }),
+        }
+      );
     } catch (error) {
       console.error("Error updating order on the server:", error);
     }
   };
 
-  const handleLine = async (e) => {
-    console.log("clicking");
-    const isLine = e.line;
-    const id = e._id;
+  const handleLine = async (todo) => {
+    const isLine = todo?.line;
+    const id = todo?._id;
 
-    const updatedData = todos.map((item) =>
-      item._id === e._id
+    const updatedData = todos?.map((item) =>
+      item?._id === todo?._id
         ? {
             ...item,
-            line: e.line === "true" ? "false" : "true",
+            line: todo?.line === "true" ? "false" : "true",
           }
         : item
     );
@@ -86,15 +88,18 @@ const Dashboard = () => {
 
     try {
       // Updating the order on the server
-      await fetch(`https://job-task-the-learn-cloud-server.vercel.app/updateOrder`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          newOrder: updatedData.map((item) => item._id),
-        }),
-      });
+      await fetch(
+        `https://job-task-the-learn-cloud-server.vercel.app/updateOrder`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            newOrder: updatedData?.map((item) => item._id),
+          }),
+        }
+      );
     } catch (error) {
       console.error("Error updating order on the server:", error);
     }
@@ -118,7 +123,7 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {todos.map((todo, i) => (
+              {todos?.map((todo, i) => (
                 <tr className="border-b" key={i}>
                   <td className="hover:cursor-pointer">Drag</td>
                   <td
