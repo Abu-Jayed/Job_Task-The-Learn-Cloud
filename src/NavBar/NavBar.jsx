@@ -7,6 +7,7 @@ const NavBar = () => {
       <ul className="flex gap-6 ">
         <Link className="bg-gray-300 p-2 rounded-2xl px-3" to={"/"}>Home</Link>
         <Link className="bg-gray-300 p-2 rounded-2xl px-3" to={"dashboard"}>Dashboard</Link>
+        <Link className="bg-gray-300 p-2 rounded-2xl px-3" to={"about"}>About</Link>
       </ul>
     </div>
   );
