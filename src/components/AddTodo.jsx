@@ -3,10 +3,6 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import SimpleMDE from "react-simplemde-editor";
 
-// const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
-//   ssr: false,
-// });
-
 const AddTodo = () => {
   const { register, control, handleSubmit } = useForm();
   const [error, setError] = useState("");
@@ -27,13 +23,7 @@ const AddTodo = () => {
   });
   return (
     <div className="max-w-3xl mx-auto">
-      <div className="bg-white">
-        {/* {error && (
-          <Callout.Root color="red" className=" mb-5">
-            <Callout.Text>{error}</Callout.Text>
-          </Callout.Root>
-        )} */}
-      </div>
+      <div className="bg-white"></div>
       <form className="space-y-3 mt-5" onSubmit={onSubmit}>
         <input
           required
@@ -42,7 +32,6 @@ const AddTodo = () => {
           {...register("title")}
         />
 
-        {/* <ErrorMessage>{errors.title?.message}</ErrorMessage> */}
         <Controller
           name="description"
           control={control}

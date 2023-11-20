@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ReactDragListView from "react-drag-listview/lib/index.js";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const [todos, setTodo] = useState([]);
@@ -85,7 +85,7 @@ const Dashboard = () => {
     setTodo(updatedData);
 
     try {
-      // Update the order on the server using PUT
+      // Updating the order on the server
       await fetch(`http://localhost:3000/updateOrder`, {
         method: "PUT",
         headers: {
@@ -122,7 +122,7 @@ const Dashboard = () => {
                 <tr className="border-b" key={i}>
                   <td className="hover:cursor-pointer">Drag</td>
                   <td
-                  onClick={() => handleLine(todo)}
+                    onClick={() => handleLine(todo)}
                     className={`${
                       todo.line === "true" ? "line-through" : ""
                     } p-2 hover:cursor-text`}
