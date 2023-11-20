@@ -1,23 +1,66 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import ReactDragListView from 'react-drag-listview/lib/index.js';
+import ReactDragListView from "react-drag-listview/lib/index.js";
 
 const Dashboard = () => {
   const [todos, setTodo] = useState([]);
+
+  const handleCheck = async (e) => {
+    const status = e.status;
+    const id = e._id;
+
+    const updatedData = todos.map((item) =>
+    item._id === e._id ? { ...item, status: e.status === "completed" ? "uncompleted" : "completed" } : item
+  );
+  setTodo(updatedData)
+
+    try {
+      // Update the order on the server using PUT
+      await fetch(`http://localhost:3000/updateStatus`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          status,
+          id,
+        }),
+      });
+    } catch (error) {
+      console.error("Error updating order on the server:", error);
+    }
+  };
 
   useEffect(() => {
     fetch(`http://localhost:3000/`)
       .then((res) => res.json())
       .then((data) => {
-        setTodo(data);
+        // Order the data based on the "order" field
+        const orderedData = data.sort((a, b) => a.order - b.order);
+        setTodo(orderedData);
       });
   }, []);
 
-  const handleDragEnd = (fromIndex, toIndex) => {
+  const handleDragEnd = async (fromIndex, toIndex) => {
     const updatedData = [...todos];
     const item = updatedData.splice(fromIndex, 1)[0];
     updatedData.splice(toIndex, 0, item);
     setTodo(updatedData);
+
+    try {
+      // Update the order on the server using PUT
+      await fetch(`http://localhost:3000/updateOrder`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          newOrder: updatedData.map((item) => item._id),
+        }),
+      });
+    } catch (error) {
+      console.error("Error updating order on the server:", error);
+    }
   };
 
   return (
@@ -40,31 +83,40 @@ const Dashboard = () => {
             <tbody>
               {todos.map((todo, i) => (
                 <tr className="border-b" key={i}>
-                  <p className="hover:cursor-pointer">Drag</p>
+                  <td className="hover:cursor-pointer">Drag</td>
                   <td className="p-2">{todo.title}</td>
                   <td className="w-20 font-bold">
-                    <select
-                      className={`${todo.status === 'completed' ? 'text-green-600' : 'text-red-700'} w-24`}
-                      name=""
-                      id=""
-                    >
-                      <option
-                        className="text-red-700 font-bold"
-                        value="Hello"
+                    <div className="flex gap-2">
+                      <select
+                        className={`${
+                          todo.status === "completed"
+                            ? "text-green-600"
+                            : "text-red-700"
+                        } w-24`}
+                        name=""
+                        id=""
                       >
-                        {todo.status === 'completed'
-                          ? 'completed'
-                          : 'uncompleted'}
-                      </option>
-                      <option
-                        className="text-green-700 font-bold"
-                        value="Hi"
-                      >
-                        {todo.status === 'completed'
-                          ? 'uncompleted'
-                          : 'completed'}
-                      </option>
-                    </select>
+                        <option
+                          className="text-red-700 font-bold"
+                          value="Hello"
+                        >
+                          {todo.status === "completed"
+                            ? "completed"
+                            : "uncompleted"}
+                        </option>
+                        <option className="text-green-700 font-bold" value="Hi">
+                          {todo.status === "completed"
+                            ? "uncompleted"
+                            : "completed"}
+                        </option>
+                      </select>
+                      <input
+                        onClick={() => handleCheck(todo)}
+                        type="checkbox"
+                        name="checkbox"
+                        id=""
+                      />
+                    </div>
                   </td>
                   <td>{todo.priority}</td>
                 </tr>
