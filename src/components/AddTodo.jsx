@@ -7,12 +7,22 @@ import SimpleMDE from "react-simplemde-editor";
 //   ssr: false,
 // });
 
-
 const AddTodo = () => {
-  const {register,control,handleSubmit} = useForm();
+  const { register, control, handleSubmit } = useForm();
   const [error, setError] = useState("");
   const [isSubmitting, setSubmitting] = useState(false);
+
   const onSubmit = handleSubmit(async (data) => {
+    fetch("http://localhost:3000/addTodo", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+      });
+
     console.log(data);
   });
   return (
@@ -25,11 +35,13 @@ const AddTodo = () => {
         )} */}
       </div>
       <form className="space-y-3 mt-5" onSubmit={onSubmit}>
-          <input
+        <input
+          required
           className="w-full border py-1 hover:border-cyan-500 focus:border-cyan-600 px-2 rounded"
-            placeholder="Title"
-            {...register("title")}
-          />
+          placeholder="Title"
+          {...register("title")}
+        />
+
         {/* <ErrorMessage>{errors.title?.message}</ErrorMessage> */}
         <Controller
           name="description"
@@ -38,8 +50,18 @@ const AddTodo = () => {
             <SimpleMDE placeholder="Description" {...field}></SimpleMDE>
           )}
         ></Controller>
+        <select {...register("priority")}>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+        <br />
+
         {/* <ErrorMessage>{errors.description?.message}</ErrorMessage> */}
-        <button className="bg-cyan-700 p-2 text-white rounded-md" disabled={isSubmitting}>
+        <button
+          className="bg-cyan-700 p-2 text-white rounded-md"
+          disabled={isSubmitting}
+        >
           Add New Todo
         </button>
       </form>
