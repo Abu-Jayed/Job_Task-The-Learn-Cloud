@@ -5,6 +5,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Dashboard from "./Dashboard/Dashboard.jsx";
 import About from "./About/About.jsx";
+import AddTodo from "./components/AddTodo.jsx";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
     children: [
       { path: "dashboard", element: <Dashboard></Dashboard> },
       { path: "about", element: <About></About> },
+      { path: "/dashboard/add", element: <AddTodo></AddTodo> },
     ],
   },
 ]);

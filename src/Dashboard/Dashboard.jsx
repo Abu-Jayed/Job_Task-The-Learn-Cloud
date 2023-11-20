@@ -1,8 +1,12 @@
+import { Link } from "react-router-dom";
+
 const Dashboard = () => {
   return (
     <>
-      <button className="p-2 bg-rose-400 rounded-md text-xl font-bold text-white">
+      <button className="m-2 p-2 bg-rose-400 rounded-md text-xl font-bold text-white">
+        <Link to={"/dashboard/add"}>
         Add Todos
+        </Link>
       </button>
       <div></div>
       <div className="rounded-md border-2 ">
